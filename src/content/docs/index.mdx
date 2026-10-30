@@ -1,40 +1,30 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
-hero:
-  tagline: Congrats on setting up a new Starlight project!
-  image:
-    file: ../../assets/houston.webp
-  actions:
-    - text: Example Guide
-      link: /guides/example/
-      icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
-      icon: external
-      variant: minimal
+title: 用户手册首页
+description: Crystal 系统司机与调度人员的多语言使用手册。
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+欢迎使用 Crystal 用户手册。请根据你的角色选择阅读入口，也可以通过页面顶部的语言菜单切换语言。
 
-## Next steps
+:::caution[手册建设中]
+当前版本仅完成手册框架，不是完整的操作指南。司机章节的操作步骤、界面截图和注意事项均待完善；调度手册仅预留入口。
+:::
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
-</CardGrid>
+## 按角色阅读
+
+| 手册 | 阅读对象 | 当前状态 |
+| --- | --- | --- |
+| [司机手册](/drivers/) | 使用司机端的司机 | 章节框架已建立，内容待完善 |
+| [调度手册](/dispatchers/) | 使用调度端的调度人员 | 筹备中 |
+
+## 司机手册目录
+
+1. [手册概览](/drivers/)
+2. [安装与权限](/drivers/installation/)
+3. [登录与账号](/drivers/account/)
+4. [运输任务](/drivers/tasks/)
+5. [定位与在途](/drivers/tracking/)
+6. [异常与帮助](/drivers/help/)
+
+## 语言版本
+
+[简体中文](/) · [English](/en/) · [ไทย](/th/) · [Tiếng Việt](/vi/)
