@@ -1,0 +1,92 @@
+---
+import DefaultPageTitle from '@astrojs/starlight/components/PageTitle.astro';
+
+const translations: Record<string, { label: string; error: string }> = {
+	'zh-CN': {
+		label: '打印 / 保存为 PDF',
+		error: '无法准备打印内容，请检查图片和字体是否加载成功后重试。',
+	},
+	en: {
+		label: 'Print / Save as PDF',
+		error: 'Unable to prepare this article for printing. Check that images and fonts have loaded, then try again.',
+	},
+	th: {
+		label: 'พิมพ์ / บันทึกเป็น PDF',
+		error: 'ไม่สามารถเตรียมบทความสำหรับการพิมพ์ได้ โปรดตรวจสอบว่ารูปภาพและแบบอักษรโหลดแล้ว แล้วลองอีกครั้ง',
+	},
+	vi: {
+		label: 'In / Lưu dưới dạng PDF',
+		error: 'Không thể chuẩn bị bài viết để in. Hãy kiểm tra hình ảnh và phông chữ đã tải xong, rồi thử lại.',
+	},
+};
+const { lang } = Astro.locals.starlightRoute;
+const translation = translations[lang];
+if (!translation) throw new Error(`Missing article print translation for ${lang}`);
+---
+
+<DefaultPageTitle><slot /></DefaultPageTitle>
+<article-print data-error={translation.error} hidden>
+	<button type="button">{translation.label}</button>
+</article-print>
+
+<script>
+	class ArticlePrint extends HTMLElement {
+		connectedCallback() {
+			const button = this.querySelector('button');
+			if (!button) throw new Error('Article print button is missing');
+			button.onclick = async () => {
+				button.disabled = true;
+				button.setAttribute('aria-busy', 'true');
+				const images = Array.from(document.querySelectorAll<HTMLImageElement>('.sl-markdown-content img'));
+				const loading = images.map((image) => image.loading);
+				try {
+					images.forEach((image) => { image.loading = 'eager'; });
+					await document.fonts.ready;
+					await Promise.all(images.map((image) => image.decode()));
+					window.print();
+				} catch (error) {
+					console.error('Failed to prepare article for printing', error);
+					window.alert(this.dataset.error);
+				} finally {
+					images.forEach((image, index) => { image.loading = loading[index]; });
+					button.disabled = false;
+					button.removeAttribute('aria-busy');
+				}
+			};
+			this.hidden = false;
+		}
+	}
+	customElements.define('article-print', ArticlePrint);
+</script>
+
+<style>
+	article-print:not([hidden]) {
+		display: block;
+	}
+
+	button {
+		padding: 0.5rem 0.875rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.375rem;
+		background: var(--sl-color-bg);
+		color: var(--sl-color-text);
+		font: inherit;
+		font-size: var(--sl-text-sm);
+		cursor: pointer;
+	}
+
+	button:hover:not(:disabled) {
+		border-color: var(--sl-color-text-accent);
+		color: var(--sl-color-text-accent);
+	}
+
+	button:focus-visible {
+		outline: 2px solid var(--sl-color-text-accent);
+		outline-offset: 3px;
+	}
+
+	button:disabled {
+		cursor: wait;
+		opacity: 0.6;
+	}
+</style>

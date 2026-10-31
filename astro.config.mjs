@@ -17,6 +17,10 @@ export default defineConfig({
 				vi: 'Hướng dẫn sử dụng Crystal',
 			},
 			favicon: '/favicon.ico',
+			customCss: ['./src/styles/print.css'],
+			components: {
+				PageTitle: './src/components/ArticlePageTitle.astro',
+			},
 			defaultLocale: 'root',
 			locales: {
 				root: { label: '简体中文', lang: 'zh-CN' },

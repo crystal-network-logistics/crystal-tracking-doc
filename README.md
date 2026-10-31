@@ -97,4 +97,17 @@ src/assets/manuals/
 
 提交前运行 `pnpm build`，并检查四种语言的首页、侧栏、同章节语言切换和站内链接。
 
+## 打印文章 / 保存为 PDF
+
+文章标题下方提供对应语言的“打印 / 保存为 PDF”按钮，调用浏览器原生打印窗口，不使用第三方 PDF 服务，也不会自动下载文件。按钮会等待页面字体和正文图片加载；准备失败时显示错误提示。关闭 JavaScript 时，可使用浏览器菜单或 `Ctrl+P`（macOS 为 `Cmd+P`）打印。
+
+1. 打开需要导出的单篇文章，点击打印按钮。
+2. 在打印窗口中选择“另存为 PDF”或系统 PDF 打印机。
+3. 建议使用 A4、纵向、默认缩放；关闭浏览器“页眉和页脚”，避免附加网址和日期。需要保留提示框底色时启用“背景图形”。
+4. 确认预览中的标题、正文、图片和语言字符无缺失后保存。长文章会自然分页为一个多页 PDF 文件。
+
+打印规则通过 [src/styles/print.css](./src/styles/print.css) 在 Starlight 内置打印样式上扩展：隐藏站点导航、目录、页脚和按钮，使用浅色背景、A4 页边距，处理标题分页、表格换行和图片缩放。正常屏幕阅读仍使用原有主题；按钮由 [src/components/ArticlePageTitle.astro](./src/components/ArticlePageTitle.astro) 扩展默认标题组件。
+
+打印字体使用本机字体回退，不下载或打包字体。中文优先 Noto Sans CJK SC / Noto Sans SC，其次微软雅黑或苹方；泰语优先 Noto Sans Thai，其次 Leelawadee UI 或 Tahoma；英文和越南语优先 Noto Sans，其次 Segoe UI 或 Arial。因此不同电脑的换行和分页可能不同。等待字体加载不等于检查字符覆盖；导出前须检查中文、泰文上下附标和越南文音标，尤其是在 Linux 上。缺字时安装相应 Noto 字体后重新打开页面打印。浏览器通常会嵌入所用字体的子集，但仍应在另一台电脑上检查 PDF 的显示及文字复制；需要验证嵌入时可使用 `pdffonts`。如后续要求不同设备输出完全一致，再引入经许可、自托管的固定版本字体。
+
 参考：[Starlight 多语言指南](https://starlight.astro.build/guides/i18n/) · [Astro 内容集合](https://docs.astro.build/en/guides/content-collections/)。
